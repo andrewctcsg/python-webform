@@ -2,10 +2,10 @@ from flask import Flask, render_template, flash, redirect, url_for, request
 from localforms import Form
 
 data = []
-app = Flask(__name__)
+application = Flask(__name__)
 
 
-@app.route('/', methods=['GET', 'POST'])
+@application.route('/', methods=['GET', 'POST'])
 def front():
     if request.method == "POST":
         new_firstname = request.form.get("first-name", "")
@@ -20,14 +20,14 @@ def front():
     return render_template("form.html", title='welcome')
 
 
-@app.route('/success', methods=['GET', 'POST'])
+@application.route('/success', methods=['GET', 'POST'])
 def success():
     if request.method == "POST":
         return redirect(url_for("front"))
     return render_template('success.html', title='success', firstn=data[-1])
 
 
-@app.route('/results', methods=['GET', 'POST'])
+@application.route('/results', methods=['GET', 'POST'])
 def results():
     if request.method == "POST":
         global data
@@ -35,4 +35,4 @@ def results():
     return render_template('results.html', title='success', data=data)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    application.run(debug=True)
