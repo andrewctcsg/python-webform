@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+        <h1>Thanks {{ firstn.first_name }}, Data entered Successfully!</h1>
+    <div class="row" style="text-align: center;">
+			<div class="col-md-8">
+				<form method="POST">
+                    <button type="submit" class="btn btn-default">add another entry</button>
+				</form>
+            </div>
+    </div>
+{% endblock %}
