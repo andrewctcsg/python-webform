@@ -60,7 +60,7 @@ objects:
             name: "webform"
         spec:
           containers:
-            - name: "webform-container"
+            - name: "webform"
               image: "python-webform:latest"
               ports:
                 - containerPort: 8080
