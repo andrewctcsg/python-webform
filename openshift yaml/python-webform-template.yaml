@@ -31,7 +31,7 @@ objects:
         type: "Git"
         git:
           uri: "https://github.com/andrewctcsg/python-webform.git"
-          ref: "mongodb"
+          ref: "openshift"
       strategy: 
         type: "Source"
         sourceStrategy:
@@ -57,7 +57,7 @@ objects:
       template: 
         metadata:
           labels:
-            app: "webform"
+            name: "webform"
         spec:
           containers:
             - name: "webform-container"
@@ -67,7 +67,7 @@ objects:
                   protocol: "TCP"
       replicas: 1 
       selector:
-        app: "webform"
+        name: "webform"
       triggers:
         - type: "ConfigChange" 
         - type: "ImageChange" 
@@ -99,7 +99,7 @@ objects:
       path:
       to:
         kind: Service
-        name: webform-service
+        name: webform
       port:
         targetPort: 8080-tcp
       wildcardPolicy: None 
@@ -107,7 +107,7 @@ objects:
 -   kind: Service
     apiVersion: v1
     metadata:
-      name: webform-service
+      name: webform
       labels:
         app: webform
         app.kubernetes.io/component: webform
@@ -115,7 +115,7 @@ objects:
         app.kubernetes.io/part-of: webform      
     spec:
       selector:                  
-        app: webform
+        name: webform
       ports:
         - name: 8080-tcp
           protocol: TCP
