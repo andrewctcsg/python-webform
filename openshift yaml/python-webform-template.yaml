@@ -57,7 +57,7 @@ objects:
       template: 
         metadata:
           labels:
-            name: "webform"
+            app: "webform"
         spec:
           containers:
             - name: "webform-container"
