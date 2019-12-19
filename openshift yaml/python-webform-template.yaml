@@ -49,7 +49,7 @@ objects:
     metadata:
       name: "webform-deployment"
       labels:
-        app: python-webform
+        app: webform
         app.kubernetes.io/component: webform
         app.kubernetes.io/instance: webform
         app.kubernetes.io/part-of: webform
@@ -67,7 +67,7 @@ objects:
                   protocol: "TCP"
       replicas: 1 
       selector:
-        name: "webform"
+        app: "webform"
       triggers:
         - type: "ConfigChange" 
         - type: "ImageChange" 
