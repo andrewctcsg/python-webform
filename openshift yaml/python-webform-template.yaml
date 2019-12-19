@@ -31,7 +31,7 @@ objects:
         type: "Git"
         git:
           uri: "https://github.com/andrewctcsg/python-webform.git"
-          ref: "openshift"
+          ref: "mongodb"
       strategy: 
         type: "Source"
         sourceStrategy:
@@ -115,7 +115,7 @@ objects:
         app.kubernetes.io/part-of: webform      
     spec:
       selector:                  
-        name: webform
+        app: webform
       ports:
         - name: 8080-tcp
           protocol: TCP
