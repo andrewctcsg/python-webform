@@ -1,4 +1,4 @@
-apiVersion: template.openshift.io/v1
+hapiVersion: template.openshift.io/v1
 kind: Template
 metadata:
   name: webform-template
@@ -31,7 +31,7 @@ objects:
         type: "Git"
         git:
           uri: "https://github.com/andrewctcsg/python-webform.git"
-          ref: "mongodb"
+          ref: "openshift"
       strategy: 
         type: "Source"
         sourceStrategy:
