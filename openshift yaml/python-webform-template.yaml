@@ -49,7 +49,7 @@ objects:
     metadata:
       name: "webform-deployment"
       labels:
-        app: webform
+        app: python-webform
         app.kubernetes.io/component: webform
         app.kubernetes.io/instance: webform
         app.kubernetes.io/part-of: webform
