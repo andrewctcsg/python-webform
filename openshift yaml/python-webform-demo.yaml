@@ -1,0 +1,125 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: webform-template
+  annotations:
+    description: "template of a flask webform which is connected to a MongoDB"
+    iconClass: "icon-php"
+    tags: "webform, flask, python"
+objects:
+-   kind: "BuildConfig"
+    apiVersion: "build.openshift.io/v1"
+    metadata:
+      name: "webform-build"
+      labels:
+        app: webform
+        app.kubernetes.io/component: webform
+        app.kubernetes.io/instance: webform
+        app.kubernetes.io/part-of: webform
+    spec:
+      successfulBuildsHistoryLimit: 6 
+      failedBuildsHistoryLimit: 3 
+      triggers: 
+        - type: "GitHub"
+          github:
+            secret: "secret101"
+        - type: "Generic"
+          generic:
+            secret: "secret101"
+        - type: "ImageChange"
+      source: 
+        type: "Git"
+        git:
+          uri: "https://github.com/andrewctcsg/python-webform.git"
+          ref: "master"
+      strategy: 
+        type: "Source"
+        sourceStrategy:
+          from:
+            kind: "ImageStreamTag"
+            namespace: "openshift"
+            name: "python:3.6"
+      output: 
+        to:
+          kind: "ImageStreamTag"
+          name: "python-webform:latest"
+          
+-   kind: "DeploymentConfig"
+    apiVersion: "apps.openshift.io/v1"
+    metadata:
+      name: "webform-deployment"
+      labels:
+        app: webform
+        app.kubernetes.io/component: webform
+        app.kubernetes.io/instance: webform
+        app.kubernetes.io/part-of: webform
+    spec:
+      template: 
+        metadata:
+          labels:
+            name: "webform"
+        spec:
+          containers:
+            - name: "webform"
+              image: "python-webform:latest"
+              ports:
+                - containerPort: 8080
+                  protocol: "TCP"
+      replicas: 1 
+      selector:
+        name: "webform"
+      triggers:
+        - type: "ConfigChange" 
+        - type: "ImageChange" 
+          imageChangeParams:
+            automatic: true
+            containerNames:
+              - "webform"
+            from:
+              kind: "ImageStreamTag"
+              name: "python-webform:latest"
+      strategy: 
+        type: "Rolling"
+          
+-   kind: "ImageStream"
+    apiVersion: "image.openshift.io/v1"
+    metadata: 
+      name: "python-webform"
+      
+-   apiVersion: route.openshift.io/v1
+    kind: Route
+    metadata:
+      name: webform-route
+      labels:
+        app: webform
+        app.kubernetes.io/component: webform
+        app.kubernetes.io/instance: webform
+        app.kubernetes.io/part-of: webform
+    spec:
+      path:
+      to:
+        kind: Service
+        name: webform
+      port:
+        targetPort: 8080-tcp
+      wildcardPolicy: None 
+        
+-   kind: Service
+    apiVersion: v1
+    metadata:
+      name: webform
+      labels:
+        app: webform
+        app.kubernetes.io/component: webform
+        app.kubernetes.io/instance: webform
+        app.kubernetes.io/part-of: webform      
+    spec:
+      selector:                  
+        name: webform
+      ports:
+        - name: 8080-tcp
+          protocol: TCP
+          port: 8080
+          targetPort: 8080       
+    status:
+      loadBalancer: {}
