@@ -10,9 +10,9 @@ objects:
 -   kind: "BuildConfig"
     apiVersion: "build.openshift.io/v1"
     metadata:
-      name: "webform-build"
+      name: "python-webform"
       labels:
-        app: webform
+        app: python-webform
         app.kubernetes.io/component: webform
         app.kubernetes.io/instance: webform
         app.kubernetes.io/part-of: webform
@@ -47,9 +47,9 @@ objects:
 -   kind: "DeploymentConfig"
     apiVersion: "apps.openshift.io/v1"
     metadata:
-      name: "webform-deployment"
+      name: "python-webform"
       labels:
-        app: webform
+        app: python-webform
         app.kubernetes.io/component: webform
         app.kubernetes.io/instance: webform
         app.kubernetes.io/part-of: webform
@@ -57,24 +57,24 @@ objects:
       template: 
         metadata:
           labels:
-            name: "webform"
+            name: "python-webform"
         spec:
           containers:
-            - name: "webform"
+            - name: "python-webform"
               image: "python-webform:latest"
               ports:
                 - containerPort: 8080
                   protocol: "TCP"
       replicas: 1 
       selector:
-        name: "webform"
+        name: "python-webform"
       triggers:
         - type: "ConfigChange" 
         - type: "ImageChange" 
           imageChangeParams:
             automatic: true
             containerNames:
-              - "webform"
+              - "python-webform"
             from:
               kind: "ImageStreamTag"
               name: "python-webform:latest"
@@ -89,9 +89,9 @@ objects:
 -   apiVersion: route.openshift.io/v1
     kind: Route
     metadata:
-      name: webform-route
+      name: python-webform
       labels:
-        app: webform
+        app: python-webform
         app.kubernetes.io/component: webform
         app.kubernetes.io/instance: webform
         app.kubernetes.io/part-of: webform
@@ -99,7 +99,7 @@ objects:
       path:
       to:
         kind: Service
-        name: webform
+        name: python-webform
       port:
         targetPort: 8080-tcp
       wildcardPolicy: None 
@@ -107,15 +107,15 @@ objects:
 -   kind: Service
     apiVersion: v1
     metadata:
-      name: webform
+      name: python-webform
       labels:
-        app: webform
+        app: python-webform
         app.kubernetes.io/component: webform
         app.kubernetes.io/instance: webform
         app.kubernetes.io/part-of: webform      
     spec:
       selector:                  
-        name: webform
+        name: python-webform
       ports:
         - name: 8080-tcp
           protocol: TCP
