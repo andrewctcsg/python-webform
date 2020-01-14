@@ -31,7 +31,7 @@ objects:
         type: "Git"
         git:
           uri: "https://github.com/andrewctcsg/python-webform.git"
-          ref: "v2-demo"
+          ref: "master"
       strategy: 
         type: "Source"
         sourceStrategy:
