@@ -6,7 +6,7 @@ url = 'mongodb://basicuser:password@mongodb:27017/formsdb'
 client = MongoClient(url)
 db = client['formsdb']
 collection = db["formsc"]
-posts = db.posts
+user = db.user
 dup = '0'
 data = []
 application = Flask(__name__)
@@ -23,14 +23,14 @@ def front():
         new_email = request.form.get("email", "")
         new_mobile = request.form.get("mobile", "")
 
-        if db.posts.count_documents({}) == 0:
+        if db.user.count_documents({}) == 0:
             new_form = Form(new_firstname, new_lastname, new_email, new_mobile)
             data.append(new_form)  # insert to ram
-            db.posts.insert_one(new_form.databasepacking())  # insert to mongodb
+            db.user.insert_one(new_form.databasepacking())  # insert to mongodb
             print("saved")
             return redirect(url_for("success"))
 
-        for entry in db.posts.find({}):
+        for entry in db.user.find({}):
             if new_email == entry.get('_id'):
                 print("email already used")
                 dup = '1'
@@ -38,7 +38,7 @@ def front():
             else:
                 new_form = Form(new_firstname, new_lastname, new_email, new_mobile)
                 data.append(new_form)   #insert to ram
-                db.posts.insert_one(new_form.databasepacking())     #insert to mongodb
+                db.user.insert_one(new_form.databasepacking())     #insert to mongodb
                 print("saved")
                 dup = '0'
                 return redirect(url_for("success"))
@@ -64,14 +64,14 @@ def resultsdb():
     global db
     data2 = []
 
-    for entry in db.posts.find({}):
+    for entry in db.user.find({}):
         test = Form(entry.get('first_name'), entry.get('last_name'), entry.get('_id'), entry.get('mobile'))
         data2.append(test)
 
     if request.method == "POST":
-        for index in range(db.posts.count_documents({})):
-            print(posts.count_documents({}))
-            db.posts.delete_one({})
+        for index in range(db.user.count_documents({})):
+            print(user.count_documents({}))
+            db.user.delete_one({})
         data2 = []
     return render_template('resultsdb.html', title='resultsdb', data=data2)
 
