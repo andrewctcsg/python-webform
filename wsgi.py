@@ -2,7 +2,7 @@ from flask import Flask, render_template, flash, redirect, url_for, request
 from localforms import Form
 from pymongo import MongoClient
 
-url = 'mongodb://basicuser:password@mongodb:27017/formsdb' 
+url = 'mongodb://admin:admin@mongodb:27017/formsdb' 
 client = MongoClient(url)
 db = client['formsdb']
 collection = db["formsc"]
